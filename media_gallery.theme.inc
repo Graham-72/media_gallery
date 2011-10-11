@@ -205,10 +205,10 @@ function theme_media_gallery_media_item_lightbox($variables) {
   $link_vars = array();
   $link_vars['image'] = $image;
   $link_vars['link_path'] = "media-gallery/detail/$gallery_id/$media_id";
-  $link_vars['no_link'] = $element['#bundle'] == 'video' ? TRUE : FALSE;
+  $link_vars['no_link'] = $element['#bundle'] != 'image' ? TRUE : FALSE;
 
   if ($gallery_node->getValue('media_gallery_allow_download') == TRUE) {
-    $download_link = $element['#bundle'] == 'video' ? l(t('View detail page'), $link_vars['link_path']) : theme('media_gallery_download_link', array('file' => $file));
+    $download_link = $element['#bundle'] == 'image' ? theme('media_gallery_download_link', array('file' => $file)) : l(t('View detail page'), $link_vars['link_path']);
   }
 
   else {
@@ -294,7 +294,7 @@ function theme_media_gallery_media_item_detail($variables) {
   }
 
   if ($gallery_node->getValue('media_gallery_allow_download') == TRUE) {
-    $download_link = $element['#bundle'] == 'video' ? '&nbsp;' : theme('media_gallery_download_link', array('file' => $file));
+    $download_link = $element['#bundle'] == 'image' ? theme('media_gallery_download_link', array('file' => $file)) : '&nbsp;';
   }
   else {
     // Very ugly fix: This prevents the license info from being either hidden
