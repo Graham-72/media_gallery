@@ -81,8 +81,6 @@ function media_gallery_menu() {
     'type' => MENU_LOCAL_TASK,
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
     'file' => 'media_gallery.pages.inc',
-     // Use the same setting as node module
-    'theme callback' => '_node_custom_theme',
   );
   $items['media-gallery/detail/%node/%file/remove'] = array(
     'title' => 'Remove',
@@ -93,8 +91,6 @@ function media_gallery_menu() {
     'type' => MENU_LOCAL_TASK,
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
     'file' => 'media_gallery.pages.inc',
-     // Use the same setting as node module.
-    'theme callback' => '_node_custom_theme',
   );
   $items['media-gallery/lightbox/%node/%file'] = array(
     'page callback' => 'media_gallery_lightbox_page',
