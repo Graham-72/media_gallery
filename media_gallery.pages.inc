@@ -185,7 +185,7 @@ function _media_gallery_sanitize_ids($prefix, $list) {
  */
 function media_gallery_reorder_collection($collection, $order) {
   // Get a complete ordered list of the galleries in this collection.
-  $galleries = db_query('SELECT ti.nid FROM {taxonomy_index} ti LEFT JOIN {media_gallery_weight} mgw on ti.nid = mgw.nid WHERE ti.tid = :tid ORDER BY mgw.weight ASC, ti.nid ASC', array(':tid' => $collection->tid))->fetchCol();
+  $galleries = db_query('SELECT ti.nid FROM {taxonomy_index} ti LEFT JOIN {media_gallery_weight} mgw ON (ti.nid = mgw.nid AND ti.tid = mgw.tid) WHERE ti.tid = :tid ORDER BY mgw.weight ASC, ti.nid ASC', array(':tid' => $collection->tid))->fetchCol();
   // Sort the list.
   $galleries = _media_gallery_reorder($galleries, $order);
   // Resave gallery weights for the entire collection.
