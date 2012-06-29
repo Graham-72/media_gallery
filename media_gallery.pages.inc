@@ -15,6 +15,7 @@ function media_gallery_list_galleries($term) {
   // Add front-end resources for drag-and-drop sorting.
   if (user_access('administer media galleries')) {
     drupal_add_library('system', 'ui.sortable');
+    drupal_add_library('system', 'jquery.bbq');
     drupal_add_js(drupal_get_path('module', 'media_gallery') . '/media_gallery.dragdrop.js');
     drupal_add_css(drupal_get_path('module', 'media_gallery') . '/media_gallery.dragdrop.css');
     $sort_collection_url = url('media-gallery/sort/collection/' . $term->tid . '/' . drupal_get_token('media_gallery'));
