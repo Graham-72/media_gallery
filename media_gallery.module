@@ -168,7 +168,7 @@ function media_gallery_admin_paths() {
  */
 function media_gallery_menu_local_tasks_alter(&$data, $router_item, $root_path) {
   // Rename the "Edit" tab on gallery nodes to "Edit gallery".
-  if (($node = menu_get_object()) && isset($node->type) && $node->type == 'media_gallery') {
+  if (($node = menu_get_object()) && isset($node->type) && $node->type == 'media_gallery' && !empty($data['tabs'])) {
     $tabs = &$data['tabs'][0]['output'];
     foreach ($tabs as &$tab) {
       if (isset($tab['#link']['path']) && $tab['#link']['path'] == 'node/%/edit') {
