@@ -262,7 +262,7 @@ function media_gallery_add_images($node) {
   $fids = $_POST['files'];
 
   // Determine which file ids are already included in this gallery.
-  $items = $node->media_gallery_media[LANGUAGE_NONE];
+  $items = isset($node->media_gallery_media[LANGUAGE_NONE]) ? $node->media_gallery_media[LANGUAGE_NONE] : array();
   foreach ($items as $item) {
     $existing_fids[$item['fid']] = TRUE;
   }
