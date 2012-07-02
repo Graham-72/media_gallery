@@ -64,9 +64,12 @@ function media_gallery_list_galleries($term) {
   else {
     $build['no_content'] = array(
       '#prefix' => '<p>',
-      '#markup' => t('No galleries have been set up yet. <a href="@link">Add a gallery.</a>', array('@link' => url('node/add/media-gallery'))),
+      '#markup' => t('No galleries have been set up yet.'),
       '#suffix' => '</p>',
     );
+    if (node_access('create', 'media-gallery')) {
+      $build['no_content']['#markup'] .= ' ' . t('<a href="@link">Add a gallery.</a>', array('@link' => url('node/add/media-gallery')));
+    }
   }
   return $build;
 }
