@@ -1130,6 +1130,8 @@ function media_gallery_preprocess_node(&$variables) {
   if ($variables['node']->type == 'media_gallery' && $variables['view_mode'] == 'teaser') {
     $variables['content']['#theme'] = 'media_gallery_teaser';
     $variables['content']['#node'] = $variables['node'];
+    $variables['classes_array'][] = 'mg-gallery';
+    $variables['classes_array'][] = 'mg-teaser';
   }
 }
 
