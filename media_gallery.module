@@ -753,9 +753,11 @@ function media_gallery_get_media_type_count($node, $media_field = 'media_gallery
  */
 function media_gallery_get_file_ids($node, $media_field = 'media_gallery_media') {
   $fids = array();
-  $enhanced_node = new FieldsRSIPreventor($node);
-  foreach ($enhanced_node->getAllItems($media_field) as $item) {
-    $fids[] = _media_gallery_get_media_fid($item);
+  $media_items = field_get_items('node', $node, $media_field);
+  if( $media_items !== FALSE ) {
+    foreach ($media_items as $item) {
+      $fids[] = _media_gallery_get_media_fid($item);
+    }
   }
   return drupal_map_assoc($fids);
 }
@@ -1376,8 +1378,8 @@ function media_gallery_edit_access($node) {
  */
 function media_gallery_multiedit_access($node) {
   if (media_gallery_edit_access($node)) {
-    $node = new FieldsRSIPreventor($node);
-    if (count($node->getAllItems('media_gallery_media')) > 0 ) {
+    $media_items = field_get_items('node', $node, 'media_gallery_media');
+    if( $media_items !== FALSE && count($media_items) > 0 ) {
       return TRUE;
     }
   }
