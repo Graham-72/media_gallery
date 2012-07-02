@@ -10,8 +10,9 @@ Drupal.media_gallery = {};
 
 Drupal.media_gallery.open_browser = function (event) {
   event.preventDefault();
+  var globalOptions = Drupal.media.popups.mediaBrowser.getDefaults;
   var pluginOptions = { 'id': 'media_gallery', 'multiselect' : true , 'types': Drupal.settings.mediaGalleryAllowedMediaTypes};
-  Drupal.media.popups.mediaBrowser(Drupal.media_gallery.add_media, pluginOptions);
+  Drupal.media.popups.mediaBrowser(Drupal.media_gallery.add_media, globalOptions, pluginOptions);
 };
 
 Drupal.media_gallery.add_media = function (mediaFiles) {
