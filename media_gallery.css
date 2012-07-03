@@ -450,6 +450,7 @@ a.media-gallery-thumb img,
 .mg-col .mg-gallery.mg-teaser .content {
   margin: 0;
   outline: none;
+  position: relative;
 }
 
 .mg-col .mg-gallery.mg-teaser h2 {
