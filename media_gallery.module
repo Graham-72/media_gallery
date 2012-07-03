@@ -992,7 +992,9 @@ function _media_gallery_add_remove_checkbox(&$form, &$form_state, $node) {
 
   // Put the remove checkbox inside the "preview" section, so it shows up
   // underneath the thumbnail.
-  $form['preview']['remove'] = array(
+  // @todo: Move into $form['preview']['remove'] when issue
+  // http://drupal.org/node/1055986 get committed.
+  $form['remove'] = array(
     '#type' => 'checkbox',
     '#title' => t('Remove from gallery'),
     '#description' => t('The original file remains in your <a href="@library">media library</a>.', array('@library' => url('admin/content/media'))),
