@@ -758,13 +758,29 @@ function media_gallery_get_media_type_count($node, $media_field = 'media_gallery
  */
 function media_gallery_get_file_ids($node, $media_field = 'media_gallery_media') {
   $fids = array();
-  $media_items = field_get_items('node', $node, $media_field);
+  $media_items = _media_gallery_field_get_items('node', $node, $media_field);
   if( $media_items !== FALSE ) {
     foreach ($media_items as $item) {
       $fids[] = _media_gallery_get_media_fid($item);
     }
   }
   return drupal_map_assoc($fids);
+}
+
+/**
+ * media_gallery_media_original is not a field and therefore cannot be used by field_get_items.
+ */
+function _media_gallery_field_get_items($entity_type, $entity, $field_name, $langcode = NULL) {
+  if ($entity_type == 'node' && $field_name == 'media_gallery_media_original') {
+    $media = $entity->media_gallery_media;
+    $entity->media_gallery_media = $entity->media_gallery_media_original;
+    $field_name = 'media_gallery_media';
+  }
+  $items = field_get_items($entity_type, $entity, $field_name, $langcode);
+  if (isset($media)) {
+    $entity->media_gallery_media = $media;
+  }
+  return $items;
 }
 
 /**
