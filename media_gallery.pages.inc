@@ -111,7 +111,13 @@ function media_gallery_lightbox_page($gallery_node, $file) {
 function media_gallery_lightbox_page_deliver($page_content) {
   // Display an error message if something went wrong.
   if (!isset($page_content) || is_int($page_content)) {
-    $content = array('#markup' => t('An unexpected error occurred. Please try again later.'));
+    if (is_int($page_content) && $page_content == MENU_ACCESS_DENIED) {
+      watchdog('access denied', check_plain($_GET['q']), NULL, WATCHDOG_WARNING);
+      $content = array('#markup' => t('You are not authorized to access this page.'));
+    }
+    else {
+      $content = array('#markup' => t('An unexpected error occurred. Please try again later.'));
+    }
   }
   // This shouldn't happen, but just in case.
   elseif (is_string($page_content)) {

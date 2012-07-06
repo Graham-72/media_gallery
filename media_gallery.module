@@ -61,8 +61,8 @@ function media_gallery_menu() {
   $items['media-gallery/detail/%node/%file'] = array(
     'page callback' => 'media_gallery_detail_page',
     'page arguments' => array(2, 3),
-    'access callback' => 'node_access',
-    'access arguments' => array('view', 2),
+    'access callback' => 'media_gallery_view_item_access',
+    'access arguments' => array(2, 3),
     'file' => 'media_gallery.pages.inc',
   );
   $items['media-gallery/detail/%node/%file/view'] = array(
@@ -75,8 +75,8 @@ function media_gallery_menu() {
     'title' => 'Edit',
     'page callback' => 'media_gallery_media_page_edit',
     'page arguments'  => array(2, 3),
-    'access callback' => 'media_access',
-    'access arguments' => array('edit'),
+    'access callback' => 'media_gallery_edit_item_access',
+    'access arguments' => array(2, 3),
     'weight' => 0,
     'type' => MENU_LOCAL_TASK,
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
@@ -95,10 +95,10 @@ function media_gallery_menu() {
   $items['media-gallery/lightbox/%node/%file'] = array(
     'page callback' => 'media_gallery_lightbox_page',
     'page arguments' => array(2, 3),
-    'access callback' => 'node_access',
-    'access arguments' => array('view', 2),
+    'access callback' => 'media_gallery_view_item_access',
+    'access arguments' => array(2, 3),
     'file' => 'media_gallery.pages.inc',
-    'delivery callback' => 'media_gallery_lightbox_page_deliver',
+    'delivery callback' => 'media_gallery_lightbox_delivery_callback',
   );
   $items['media-gallery/add-images/%node/%'] = array(
     'access callback' => 'media_gallery_edit_access_ajax',
@@ -275,14 +275,19 @@ function media_gallery_view($node, $view_mode) {
   // time building the render structure for items that won't be shown.
   if ($view_mode == 'teaser') {
     if (!empty($node->media_gallery_media[LANGUAGE_NONE])) {
-      $first_item = array_shift($node->media_gallery_media[LANGUAGE_NONE]);
-      $node->media_gallery_media[LANGUAGE_NONE] = array($first_item);
+      if (media_access('view')) {
+        $first_item = array_shift($node->media_gallery_media[LANGUAGE_NONE]);
+        $node->media_gallery_media[LANGUAGE_NONE] = array($first_item);
+      }
+      else {
+        $node->media_gallery_media[LANGUAGE_NONE] = array();
+      }
     }
   }
   // For the full display, implement pagination.
   elseif ($view_mode == 'full' || $view_mode == 'media_gallery_block') {
     $full = $view_mode == 'full' ? TRUE : FALSE;
-    if (!empty($node->media_gallery_media)) {
+    if (!empty($node->media_gallery_media) && media_access('view')) {
       $media = $node->media_gallery_media[LANGUAGE_NONE];
     }
     else {
@@ -552,7 +557,7 @@ function media_gallery_block_view($delta = '') {
     $block['subject'] = NULL;
     $block['content'] = '';
   }
-  elseif (empty($node->media_gallery_media_original)) {
+  elseif (empty($node->media_gallery_media_original) || !media_access('view')) {
     // Bail out now if there won't be any media items to show.
     $block['subject'] = check_plain($node->title);
     $block['content'] = t('No content available.');
@@ -998,6 +1003,7 @@ function _media_gallery_add_remove_checkbox(&$form, &$form_state, $node) {
     '#type' => 'checkbox',
     '#title' => t('Remove from gallery'),
     '#description' => t('The original file remains in your <a href="@library">media library</a>.', array('@library' => url('admin/content/media'))),
+    '#access' => node_access('update', $node),
   );
 
   // Add our own submit handler. We need to add it to both the form and the
@@ -1369,6 +1375,19 @@ function media_gallery_get_default_gallery_collection() {
 }
 
 /**
+ * Access callback for viewing parts of a node that are only relevant for media
+ * galleries.
+ */
+function media_gallery_view_access($node) {
+  if (!node_access('view', $node)) {
+    return FALSE;
+  }
+  if ($node->type == 'media_gallery') {
+    return TRUE;
+  }
+}
+
+/**
  * Access callback for editing parts of a node that are only relevant for media
  * galleries.
  */
@@ -1386,12 +1405,47 @@ function media_gallery_edit_access($node) {
  * galleries.
  */
 function media_gallery_multiedit_access($node) {
-  if (media_gallery_edit_access($node)) {
+  if (media_gallery_edit_access($node) && media_access('edit')) {
     $media_items = field_get_items('node', $node, 'media_gallery_media');
     if( $media_items !== FALSE && count($media_items) > 0 ) {
       return TRUE;
     }
   }
+}
+
+/**
+ * Access callback for viewing a media item in a gallery.
+ *
+ * @param $node
+ *   The gallery node object.
+ * @param $file
+ *   The file to view.
+ *
+ * @return
+ *   TRUE if access is granted; FALSE otherwise.
+ */
+function media_gallery_view_item_access($node, $file) {
+  // Only grant access if the user can view the gallery and the provided media.
+  return media_gallery_view_access($node) && media_access('view')
+    && in_array($file->fid, media_gallery_get_file_ids($node));
+}
+
+/**
+ * Access callback for editing a media item in a gallery.
+ *
+ * @param $node
+ *   The gallery node object.
+ * @param $file
+ *   The file to view.
+ *
+ * @return
+ *   TRUE if access is granted; FALSE otherwise.
+ */
+function media_gallery_edit_item_access($node, $file) {
+  // Only grant access if the user can edit the provided media
+  // and the media is part of the gallery.
+  return media_access('edit')
+    && in_array($file->fid, media_gallery_get_file_ids($node));
 }
 
 /**
@@ -1699,4 +1753,17 @@ function media_gallery_file_default_displays() {
   }
 
   return $default_displays;
+}
+
+/**
+ * Menu page delivery callback.
+ * This is a delegate function. In case, the user has no access to the menu
+ * item, the menu system does not load the specified file and therefore can
+ * not use the custom deliver function.
+ */
+function media_gallery_lightbox_delivery_callback($page_content) {
+  if (!function_exists('media_gallery_lightbox_page_deliver')) {
+    module_load_include('inc', 'media_gallery', 'media_gallery.pages');
+  }
+  media_gallery_lightbox_page_deliver($page_content);
 }
