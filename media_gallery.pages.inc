@@ -21,6 +21,9 @@ function media_gallery_list_galleries($term) {
     $sort_collection_url = url('media-gallery/sort/collection/' . $term->tid . '/' . drupal_get_token('media_gallery'));
     drupal_add_js(array('mediaGallerySortCollectionUrl' => $sort_collection_url), array('type' => 'setting'));
   }
+  // Assign the term name as the page title.
+  drupal_set_title($term->name);
+
   // Build breadcrumb based on the hierarchy of the term.
   $current = (object) array(
     'tid' => $term->tid,
