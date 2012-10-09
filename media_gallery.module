@@ -58,45 +58,50 @@ function media_gallery_menu() {
     'page arguments' => array('gallery', 3),
     'file' => 'media_gallery.pages.inc',
   );
-  $items['media-gallery/detail/%node/%file'] = array(
+  $items['media-gallery/detail/%media_gallery_mg_node/%media_gallery_mg_item'] = array(
     'page callback' => 'media_gallery_detail_page',
     'page arguments' => array(2, 3),
     'access callback' => 'media_gallery_view_item_access',
     'access arguments' => array(2, 3),
+    'load arguments' => array(2),
     'file' => 'media_gallery.pages.inc',
   );
-  $items['media-gallery/detail/%node/%file/view'] = array(
+  $items['media-gallery/detail/%media_gallery_mg_node/%media_gallery_mg_item/view'] = array(
     'title' => 'View',
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'weight' => -10,
+    'load arguments' => array(2),
   );
   // An in-gallery-context version of media/%file/edit.
-  $items['media-gallery/detail/%node/%file/edit'] = array(
+  $items['media-gallery/detail/%media_gallery_mg_node/%media_gallery_mg_item/edit'] = array(
     'title' => 'Edit',
     'page callback' => 'media_gallery_media_page_edit',
     'page arguments'  => array(2, 3),
     'access callback' => 'media_gallery_edit_item_access',
     'access arguments' => array(2, 3),
+    'load arguments' => array(2),
     'weight' => 0,
     'type' => MENU_LOCAL_TASK,
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
     'file' => 'media_gallery.pages.inc',
   );
-  $items['media-gallery/detail/%node/%file/remove'] = array(
+  $items['media-gallery/detail/%media_gallery_mg_node/%media_gallery_mg_item/remove'] = array(
     'title' => 'Remove',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('media_gallery_remove_item_form', 2, 3),
     'access callback' => 'media_gallery_remove_item_access',
     'access arguments' => array(2, 3),
+    'load arguments' => array(2),
     'type' => MENU_LOCAL_TASK,
     'context' => MENU_CONTEXT_PAGE | MENU_CONTEXT_INLINE,
     'file' => 'media_gallery.pages.inc',
   );
-  $items['media-gallery/lightbox/%node/%file'] = array(
+  $items['media-gallery/lightbox/%media_gallery_mg_node/%media_gallery_mg_item'] = array(
     'page callback' => 'media_gallery_lightbox_page',
     'page arguments' => array(2, 3),
     'access callback' => 'media_gallery_view_item_access',
     'access arguments' => array(2, 3),
+    'load arguments' => array(2),
     'file' => 'media_gallery.pages.inc',
     'delivery callback' => 'media_gallery_lightbox_delivery_callback',
   );
@@ -130,6 +135,48 @@ function media_gallery_menu() {
     'file' => 'media.pages.inc',
   );
   return $items;
+}
+
+/**
+ * Load a node object from the database.
+ *
+ * @see node_load()
+ * @see media_gallery_menu()
+ *
+ * @param $nid
+ *   The node ID.
+ * @param $nid2
+ *   The same as $nid. Unused.
+ *
+ * @return
+ *   A fully-populated node object, or FALSE if the node is not found.
+ */
+function media_gallery_mg_node_load($nid, $nid2 = NULL) {
+  return node_load($nid);
+}
+/**
+ * Load a file object from the database, if it is part of the media_gallery
+ * node.
+ *
+ * @see node_load()
+ * @see file_load()
+ * @see media_gallery_menu()
+ *
+ * @param $fid
+ *   The file ID.
+ * @param $nid
+ *   The media_gallery node ID.
+ *
+ * @return
+ *   A fully-populated file object, or FALSE if the file is not part of the
+ *   media_gallery.
+ */
+function media_gallery_mg_item_load($fid, $nid) {
+  $node = node_load($nid);
+  if ($node && $node->type == 'media_gallery' && in_array($fid, media_gallery_get_file_ids($node))) {
+    return file_load($fid);
+  }
+  return FALSE;
 }
 
 /**
