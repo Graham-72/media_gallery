@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Common pages for the Media Gallery module.
+ */
+
+/**
  * Page callback to list all galleries.
  *
  * TODO: When I grow up I want to be a View.
@@ -11,7 +16,7 @@ function media_gallery_list_galleries($term) {
     module_load_include('inc', 'taxonomy', 'taxonomy.pages');
     return taxonomy_term_page($term);
   }
-  
+
   // Add front-end resources for drag-and-drop sorting.
   if (user_access('administer media galleries')) {
     drupal_add_library('system', 'ui.sortable');
@@ -60,7 +65,7 @@ function media_gallery_list_galleries($term) {
     $build['pager'] = array(
       '#theme' => 'pager',
       '#weight' => 10,
-     );
+    );
     $build['#term'] = $term;
     $build['#theme'] = 'media_gallery_collection';
   }
@@ -229,7 +234,7 @@ function media_gallery_reorder_gallery($gallery, $order) {
     $num_per_page = $gallery->media_gallery_columns[LANGUAGE_NONE][0]['value'] * $gallery->media_gallery_rows[LANGUAGE_NONE][0]['value'];
     $offset = $num_per_page * $page;
   }
-  
+
   foreach ($order as $new_delta => $old_delta) {
     $gallery->media_gallery_media[LANGUAGE_NONE][$new_delta + $offset] = $media_field[$old_delta + $offset];
   }

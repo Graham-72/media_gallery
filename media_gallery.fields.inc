@@ -309,7 +309,7 @@ function _media_gallery_get_expose_block_values() {
 
 /**
  * Allowed values callback for field_license list field.
- * 
+ *
  * @todo: should be moved to media_cc module or something.
  */
 function _media_gallery_get_field_license_values() {
