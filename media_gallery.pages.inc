@@ -164,7 +164,16 @@ function media_gallery_ajax_sort($type, $item) {
   $id_prefix = '';
   switch ($type) {
     case 'collection':
-      $id_prefix = 'node-';
+      // There are some themes, which set a specific html-prefix for the node
+      // id. Parse the id to be compatible with all themes.
+      // @see drupal_html_id()
+      $search = empty($order[0]) ? '' : $order[0];
+      if (preg_match('/^([A-Za-z0-9\-_]+?-)[0-9]+(--[0-9]+)?$/', $search, $match)) {
+        $id_prefix = $match[1];
+      }
+      else {
+        $id_prefix = 'node-';
+      }
       $order = _media_gallery_sanitize_ids($id_prefix, $order);
       $result = media_gallery_reorder_collection($item, $order);
       break;
