@@ -1304,3 +1304,15 @@ function media_gallery_update_7010() {
   }
   field_bundle_settings('file', $bundle, $bundle_settings);
 }
+
+/**
+ * Empty update function.
+ */
+function media_gallery_update_7011() {
+}
+
+/**
+ * Deprecated update function. Moved to 7200.
+ */
+function media_gallery_update_7012() {
+}
