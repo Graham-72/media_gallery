@@ -287,6 +287,11 @@ function media_gallery_view($node, $view_mode) {
       '#suffix' => '</ul>',
     );
 
+    // Prevent the overlay module to open an additional dialog.
+    if (module_exists('overlay')) {
+      $node->content['add_media_link']['#link']['localized_options']['attributes']['class'][] = 'overlay-exclude';
+    }
+
     // Enable the "Add media" link to launch the media browser.
     module_load_include('inc', 'media', 'includes/media.browser');
     media_attach_browser_js($node->content['add_media_link']);
