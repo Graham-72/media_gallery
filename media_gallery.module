@@ -1264,10 +1264,10 @@ function media_gallery_preprocess_field(&$variables, $hook) {
     $columns = 1;
     switch ($variables['element']['#view_mode']) {
       case 'media_gallery_block':
-        $columns = $variables['element']['#object']->media_gallery_block_columns['und'][0]['value'];
+        $columns = $variables['element']['#object']->media_gallery_block_columns[LANGUAGE_NONE][0]['value'];
         break;
       case 'full':
-        $columns = $variables['element']['#object']->media_gallery_columns['und'][0]['value'];
+        $columns = $variables['element']['#object']->media_gallery_columns[LANGUAGE_NONE][0]['value'];
         $media_gallery_view_mode_css = 'media-gallery-view-full';
         break;
     }
