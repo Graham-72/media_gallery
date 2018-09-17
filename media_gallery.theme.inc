@@ -113,6 +113,7 @@ function template_preprocess_media_gallery_media_item_thumbnail(&$variables) {
   $lightbox = is_numeric(strpos($format, 'lightbox')) ? TRUE : FALSE;
   if ($lightbox) {
     $element['file']['#attached']['js'][] = drupal_get_path('module', 'media_gallery') . '/colorbox-display.js';
+    $element['file']['#attached']['js'][] = drupal_get_path('module', 'media_gallery') . '/colorbox-behavior.js';
     $element['file']['#attached']['library'][] = array('media_gallery', 'colorbox');
   }
 
