@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.node.media_gallery.field_media_gallery_image
+    - image.style.media_gallery_image
     - node.type.media_gallery
   module:
     - media
@@ -19,7 +20,7 @@ content:
     weight: 0
     label: hidden
     settings:
-      image_style: ''
+      image_style: media_gallery_image
       image_link: media
     third_party_settings: {  }
     region: content
