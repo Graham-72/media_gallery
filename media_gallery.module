@@ -1,17 +1,8 @@
 <?php
 
 /**
- * Implements hook_theme().
+ * Implements hook_page_attachments().
  */
-function media_gallery_theme() {
-  return [
-    'field__node__media_gallery' => [
-      'template' => 'field--node--media-gallery',
-      'base hook' => 'node'
-    ],
-    'views_view_unformatted__media_galleries' => [
-      'template' => 'views-view-unformatted--media-galleries',
-      'base hook' => 'node'
-    ],
-  ];
+function media_gallery_page_attachments(array &$page) {
+  $page['#attached']['library'][] = 'media_gallery/media_gallery';
 }
