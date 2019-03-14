@@ -1,14 +1,12 @@
-.field__item img {
-  max-width: 100%;
-}
-
-.media_gallery_grid {
+.view-media-gallery .item-list ul,
+.view-media-galleries .view-content {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
 }
 
-.media-gallery-cell {
+.view-media-gallery .item-list ul li,
+.view-media-galleries .view-content .views-row {
   width: calc(100% / 3.1);
   padding: 4px;
 }
