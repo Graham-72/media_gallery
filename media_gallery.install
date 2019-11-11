@@ -28,11 +28,11 @@ function media_gallery_uninstall() {
   Drupal::configFactory()->getEditable('core.base_field_override.node.media_gallery.promote')->delete();
   Drupal::configFactory()->getEditable('core.entity_form_display.node.media_gallery.default')->delete();
   Drupal::configFactory()->getEditable('core.entity_view_display.node.media_gallery.default')->delete();
-
   Drupal::configFactory()->getEditable('core.entity_form_display.media.media_gallery_image.default')->delete();
   Drupal::configFactory()->getEditable('core.entity_view_display.media.media_gallery_image.default')->delete();
   Drupal::configFactory()->getEditable('field.field.media.media_gallery_image.field_media_image')->delete();
   Drupal::configFactory()->getEditable('media.type.media_gallery_image')->delete();
-
+  Drupal::configFactory()->getEditable('image.style.media_gallery_image')->delete();
   Drupal::configFactory()->getEditable('views.view.media_galleries')->delete();
+  Drupal::configFactory()->getEditable('views.view.media_gallery')->delete();
 }

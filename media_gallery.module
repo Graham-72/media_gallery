@@ -1,8 +1,25 @@
 <?php
 
+use Drupal\views\ViewExecutable;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 /**
- * Implements hook_page_attachments().
+ * Implements hook_views_pre_render().
  */
-function media_gallery_page_attachments(array &$page) {
-  $page['#attached']['library'][] = 'media_gallery/media_gallery';
+function media_gallery_views_pre_render(ViewExecutable $view) {
+  if (isset($view) && (($view->storage->id() == 'media_gallery') || ($view->storage->id() == 'media_galleries'))) {
+    $view->element['#attached']['library'][] = 'media_gallery/media_gallery';
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view().
+ */
+function media_gallery_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() == 'media_gallery') {
+    $response = new RedirectResponse('/gallery/' . $entity->id());
+    return $response->send();
+  }
 }
