@@ -1,4 +1,3 @@
-langcode: ru
 status: true
 dependencies: {  }
 name: media_gallery_image
