@@ -619,4 +619,9 @@ div.contextual-links-active a.contextual-links-trigger {
   padding: 0 !important;
 }
 
+/* Ignore Bootstrap .hidden style */
+#media-gallery-node-form .hidden {
+  display: block !important;
+}
+
 /* @end */
