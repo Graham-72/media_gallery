@@ -13,7 +13,7 @@ use Drupal\image\Entity\ImageStyle;
 function media_gallery_install() {
   // TODO: needs check if image style exists.
   // Create image style.
-  $style = ImageStyle::create([
+  /*$style = ImageStyle::create([
     'name' => 'media_gallery_image',
     'label' => 'Media Gallery Image (300x180)'
   ]);
@@ -32,13 +32,14 @@ function media_gallery_install() {
 
   // Add it to the image style and save.
   $style->addImageEffect($effect->getConfiguration());
-  $style->save();
+  $style->save();*/
 }
 
 /**
  * Implements hook_uninstall().
  */
 function media_gallery_uninstall() {
-  // Remove image style.
   \Drupal::configFactory()->getEditable('image.style.media_gallery_image')->delete();
+  \Drupal::configFactory()->getEditable('core.entity_view_mode.media.media_colorbox')->delete();
+  \Drupal::configFactory()->getEditable('core.entity_view_display.media.image.media_colorbox')->delete();
 }

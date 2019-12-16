@@ -183,17 +183,17 @@ class MediaGallery extends ContentEntityBase implements MediaGalleryInterface {
       ->setSetting('target_type', 'media')
       ->SetCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
       ->setDisplayConfigurable('form', FALSE)
-      ->setDisplayConfigurable('view', FALSE)
+      ->setDisplayConfigurable('view', TRUE)
       ->setDisplayOptions('form', [
         'type' => 'media_library_widget',
         'weight' => 2,
       ])
       ->setDisplayOptions('view', [
-        'type' => 'media_thumbnail',
+        'type' => 'entity_reference_entity_view',
         'weight' => 2,
         'label' => 'hidden',
         'settings' => [
-          'image_style' => 'media_gallery_image',
+          'view_mode' => 'media_colorbox'
         ],
       ]);
 
