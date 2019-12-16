@@ -1,7 +1,10 @@
 name: Media Gallery
-description: A flexible gallery of media.
 type: module
+description: 'A flexible gallery of media.'
+package: media
 core: 8.x
-
+core_version_requirement: ^8 || ^9
 dependencies:
-  - drupal:media_library (>= 8.6)
+  - drupal:text
+  - drupal:media_library (>= 8.7)
+configure: entity.media_gallery.settings

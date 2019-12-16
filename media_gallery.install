@@ -5,34 +5,40 @@
  * Install, update and uninstall functions for the Media Gallery.
  */
 
+use Drupal\image\Entity\ImageStyle;
+
+/**
+ * Implements hook_install().
+ */
+function media_gallery_install() {
+  // TODO: needs check if image style exists.
+  // Create image style.
+  $style = ImageStyle::create([
+    'name' => 'media_gallery_image',
+    'label' => 'Media Gallery Image (300x180)'
+  ]);
+
+  // Create effect.
+  $configuration = [
+    'uuid' => NULL,
+    'id' => 'image_scale_and_crop',
+    'weight' => 0,
+    'data' => [
+      'width' => 300,
+      'height' => 180,
+    ],
+  ];
+  $effect = \Drupal::service('plugin.manager.image.effect')->createInstance($configuration['id'], $configuration);
+
+  // Add it to the image style and save.
+  $style->addImageEffect($effect->getConfiguration());
+  $style->save();
+}
+
 /**
  * Implements hook_uninstall().
  */
 function media_gallery_uninstall() {
-  // remove all nodes
-  $node_storage = \Drupal::entityTypeManager()->getStorage('node');
-  $all_of_my_type = $node_storage->getQuery()->condition('type', 'media_gallery')->execute();
-  $entities = $node_storage->loadMultiple($all_of_my_type);
-  $node_storage->delete($entities);
-
-  // remove all media
-  $media_storage = \Drupal::entityTypeManager()->getStorage('media');
-  $all_of_my_type = $media_storage->getQuery()->condition('bundle', 'media_gallery_image')->execute();
-  $entities = $media_storage->loadMultiple($all_of_my_type);
-  $media_storage->delete($entities);
-
-  // remove all configs
-  Drupal::configFactory()->getEditable('field.storage.node.field_media_gallery_image')->delete();
-  Drupal::configFactory()->getEditable('node.type.media_gallery')->delete();
-  Drupal::configFactory()->getEditable('field.field.node.media_gallery.field_media_gallery_image')->delete();
-  Drupal::configFactory()->getEditable('core.base_field_override.node.media_gallery.promote')->delete();
-  Drupal::configFactory()->getEditable('core.entity_form_display.node.media_gallery.default')->delete();
-  Drupal::configFactory()->getEditable('core.entity_view_display.node.media_gallery.default')->delete();
-  Drupal::configFactory()->getEditable('core.entity_form_display.media.media_gallery_image.default')->delete();
-  Drupal::configFactory()->getEditable('core.entity_view_display.media.media_gallery_image.default')->delete();
-  Drupal::configFactory()->getEditable('field.field.media.media_gallery_image.field_media_image')->delete();
-  Drupal::configFactory()->getEditable('media.type.media_gallery_image')->delete();
-  Drupal::configFactory()->getEditable('image.style.media_gallery_image')->delete();
-  Drupal::configFactory()->getEditable('views.view.media_galleries')->delete();
-  Drupal::configFactory()->getEditable('views.view.media_gallery')->delete();
+  // Remove image style.
+  \Drupal::configFactory()->getEditable('image.style.media_gallery_image')->delete();
 }
