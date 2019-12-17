@@ -5,15 +5,6 @@
  * Install, update and uninstall functions for the Media Gallery.
  */
 
-use Drupal\image\Entity\ImageStyle;
-
-/**
- * Implements hook_install().
- */
-function media_gallery_install() {
-
-}
-
 /**
  * Implements hook_uninstall().
  */
