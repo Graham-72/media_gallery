@@ -1,6 +1,6 @@
 name: Media Gallery
 type: module
-description: 'A flexible gallery of media.'
+description: 'A simple gallery of media.'
 package: media
 core: 8.x
 core_version_requirement: ^8 || ^9
