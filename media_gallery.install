@@ -11,28 +11,7 @@ use Drupal\image\Entity\ImageStyle;
  * Implements hook_install().
  */
 function media_gallery_install() {
-  // TODO: needs check if image style exists.
-  // Create image style.
-  /*$style = ImageStyle::create([
-    'name' => 'media_gallery_image',
-    'label' => 'Media Gallery Image (300x180)'
-  ]);
 
-  // Create effect.
-  $configuration = [
-    'uuid' => NULL,
-    'id' => 'image_scale_and_crop',
-    'weight' => 0,
-    'data' => [
-      'width' => 300,
-      'height' => 180,
-    ],
-  ];
-  $effect = \Drupal::service('plugin.manager.image.effect')->createInstance($configuration['id'], $configuration);
-
-  // Add it to the image style and save.
-  $style->addImageEffect($effect->getConfiguration());
-  $style->save();*/
 }
 
 /**

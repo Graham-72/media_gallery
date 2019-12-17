@@ -6,6 +6,14 @@
  */
 
 use Drupal\Core\Render\Element;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function media_gallery_help($route_name, RouteMatchInterface $route_match) {
+
+}
 
 /**
  * Implements hook_theme().
@@ -25,8 +33,8 @@ function media_gallery_theme() {
  *
  * @param array $variables
  *   An associative array containing:
- *   - elements: An associative array containing the media gallery information and any
- *     fields attached to the entity.
+ *   - elements: An associative array containing the media gallery
+ *     information and any fields attached to the entity.
  *   - attributes: HTML attributes for the containing element.
  */
 function template_preprocess_media_gallery(array &$variables) {

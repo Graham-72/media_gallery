@@ -193,7 +193,7 @@ class MediaGallery extends ContentEntityBase implements MediaGalleryInterface {
         'weight' => 2,
         'label' => 'hidden',
         'settings' => [
-          'view_mode' => 'media_colorbox'
+          'view_mode' => 'media_colorbox',
         ],
       ]);
 
