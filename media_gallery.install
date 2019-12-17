@@ -42,4 +42,5 @@ function media_gallery_uninstall() {
   \Drupal::configFactory()->getEditable('image.style.media_gallery_image')->delete();
   \Drupal::configFactory()->getEditable('core.entity_view_mode.media.media_colorbox')->delete();
   \Drupal::configFactory()->getEditable('core.entity_view_display.media.image.media_colorbox')->delete();
+  \Drupal::configFactory()->getEditable('views.view.media_galleries')->delete();
 }
