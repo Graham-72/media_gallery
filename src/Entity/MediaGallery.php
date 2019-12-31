@@ -4,6 +4,7 @@ namespace Drupal\media_gallery\Entity;
 
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
+use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -22,6 +23,7 @@ use Drupal\user\UserInterface;
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\media_gallery\MediaGalleryListBuilder",
  *     "views_data" = "Drupal\views\EntityViewsData",
+ *     "access" = "Drupal\media\MediaAccessControlHandler",
  *     "form" = {
  *       "add" = "Drupal\media_gallery\Form\MediaGalleryForm",
  *       "edit" = "Drupal\media_gallery\Form\MediaGalleryForm",
@@ -36,7 +38,8 @@ use Drupal\user\UserInterface;
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "title",
- *     "uuid" = "uuid"
+ *     "uuid" = "uuid",
+ *     "published" = "status"
  *   },
  *   links = {
  *     "add-form" = "/admin/content/media-gallery/add",
@@ -51,6 +54,8 @@ use Drupal\user\UserInterface;
 class MediaGallery extends ContentEntityBase implements MediaGalleryInterface {
 
   use EntityChangedTrait;
+
+  use EntityPublishedTrait;
 
   /**
    * {@inheritdoc}
