@@ -38,6 +38,8 @@ function media_gallery_theme() {
  *   - attributes: HTML attributes for the containing element.
  */
 function template_preprocess_media_gallery(array &$variables) {
+  $variables['media_gallery'] = $variables['elements']['#media_gallery'];
+
   foreach (Element::children($variables['elements']) as $key) {
     $variables['content'][$key] = $variables['elements'][$key];
   }
