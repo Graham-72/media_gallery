@@ -179,7 +179,6 @@ class MediaGallery extends ContentEntityBase implements MediaGalleryInterface {
 
     $fields['images'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Gallery images'))
-      ->setRequired(TRUE)
       ->setSetting('target_type', 'media')
       ->SetCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
       ->setDisplayConfigurable('form', FALSE)
