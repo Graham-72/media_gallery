@@ -42,3 +42,20 @@ function template_preprocess_media_gallery(array &$variables) {
     $variables['content'][$key] = $variables['elements'][$key];
   }
 }
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function media_gallery_theme_suggestions_media_gallery(array $variables) {
+  $suggestions = [];
+  $media_gallery = $variables['elements']['#media_gallery'];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'media_gallery__' . $sanitized_view_mode;
+  $suggestions[] = 'media_gallery__' . $media_gallery->bundle();
+  $suggestions[] = 'media_gallery__' . $media_gallery->bundle() . '__' . $sanitized_view_mode;
+  $suggestions[] = 'media_gallery__' . $media_gallery->id();
+  $suggestions[] = 'media_gallery__' . $media_gallery->id() . '__' . $sanitized_view_mode;
+
+  return $suggestions;
+}
