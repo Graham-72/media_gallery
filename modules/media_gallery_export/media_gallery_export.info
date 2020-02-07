@@ -1,0 +1,5 @@
+name = Media Gallery Export
+description = Export media gallery.
+core = 7.x
+package = Media
+dependencies[] = media_gallery
