@@ -12,7 +12,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
  * Implements hook_help().
  */
 function media_gallery_help($route_name, RouteMatchInterface $route_match) {
-
+  return '';
 }
 
 /**
@@ -22,6 +22,9 @@ function media_gallery_theme() {
   return [
     'media_gallery' => [
       'render element' => 'elements',
+    ],
+    'views_view_unformatted__media_galleries' => [
+      'base hook' => 'view',
     ],
   ];
 }
