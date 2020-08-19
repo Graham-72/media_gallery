@@ -25,7 +25,8 @@ REQUIREMENTS
 
  * media (drupal core)
  * media_library (drupal core)
- * colorbox - https://www.drupal.org/project/colorbox
+ * colorbox - https://drupal.org/project/colorbox
+ * photoswipe (optional) - https://drupal.org/project/photoswipe
 
 
 INSTALLATION
@@ -38,7 +39,7 @@ INSTALLATION
 CONFIGURATION
 -------------
 
-    1. Navigate to Modules and enable the module.
+    1. Navigate to Extend and enable the module.
     2. Add new galleries: /admin/content/media-gallery
     3. Add own fields to galleries (if you want):
        /admin/structure/media-gallery/fields
