@@ -9,7 +9,7 @@
  * Implements hook_help().
  */
 function media_gallery_export_help($path, $arg) {
- return '';
+  return '';
 }
 
 /**
@@ -36,7 +36,7 @@ function media_gallery_export_form() {
   $form['fieldset'] = [
     '#type' => 'fieldset',
     '#title' => t('Export media galleries'),
-    '#description' => 'Galleries will be exported to sites/default/files/media_gallery_export',
+    '#description' => t('Galleries will be exported to sites/default/files/media_gallery_export'),
   ];
   $form['fieldset']['submit'] = [
     '#value' => t('Export'),
@@ -59,19 +59,27 @@ function media_gallery_export_form_submit() {
     $galleries_csv = fopen($export_dir_path . '/galleries.csv', 'w');
 
     foreach ($galleries as $gallery) {
-      $fids = $gallery->media_gallery_media['und'];
+      $fids = $gallery->media_gallery_media[LANGUAGE_NONE];
       $gallery_dir = 'public://media_gallery_export/' . $gallery->nid;
       $gallery_dir_path = drupal_realpath($gallery_dir);
 
-      $csv = [$gallery->nid, $gallery->title];
-      fputcsv($galleries_csv, $csv, ';');
+      $gallery_desc_orig = $gallery->media_gallery_description[LANGUAGE_NONE][0]['safe_value'];
+      $gallery_desc = str_replace(["\r\n", "\n\r", "\n", "\r"], '', $gallery_desc_orig);
+
+      $csv = [
+        $gallery->nid,
+        $gallery->title,
+        $gallery_desc,
+        drupal_get_path_alias('node/' . $gallery->nid),
+      ];
+      fputcsv($galleries_csv, $csv, ';', '"');
 
       if (file_prepare_directory($gallery_dir, FILE_CREATE_DIRECTORY)) {
         $gallery_csv = fopen($gallery_dir_path . '/gallery.csv', 'w');
 
         foreach ($fids as $fid) {
           $file = file_load($fid['fid']);
-          $file->media_title ? $file_title = $file->media_title['und'][0]['safe_value'] : $file_title = 'No media title';
+          $file->media_title ? $file_title = $file->media_title[LANGUAGE_NONE][0]['safe_value'] : $file_title = 'No media title';
           $file_name = drupal_basename($file->uri);
           $file_path = drupal_realpath($file->uri);
           $file_new_path = $gallery_dir_path . '/' . $file_name;
